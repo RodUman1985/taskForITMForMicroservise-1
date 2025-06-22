@@ -1,0 +1,13 @@
+keycloak:
+  realm: test-realm
+  resource: test-client
+  auth-server-url: http://localhost:8080/auth
+  credentials:
+    secret: test-secret
+
+spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8080/auth/realms/test-realm
