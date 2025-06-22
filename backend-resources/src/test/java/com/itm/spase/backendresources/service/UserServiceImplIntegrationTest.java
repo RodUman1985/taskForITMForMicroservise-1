@@ -26,10 +26,7 @@ import java.util.UUID;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-/**
- * Интеграционный тест для слоя сервисов UserServiceImpl.
- * Исправлено: убраны избыточные моки для избежания UnnecessaryStubbingException.
- */
+
 @ExtendWith(MockitoExtension.class)
 class UserServiceImplIntegrationTest {
 
@@ -67,11 +64,7 @@ class UserServiceImplIntegrationTest {
         realmField.set(userService, realm);
     }
 
-    /**
-     * Тест успешного создания пользователя.
-     * Критично: getStatusInfo() должен возвращать Response.Status.CREATED, а не мок!
-     * Убрана избыточная настройка getHeaderString("Location").
-     */
+
     @Test
     void createUser_Success() {
         UserRequest userRequest = new UserRequest(
@@ -86,7 +79,7 @@ class UserServiceImplIntegrationTest {
         when(response.getStatus()).thenReturn(Integer.valueOf(201)); // HTTP 201 Created
         when(response.getStatusInfo()).thenReturn(Response.Status.CREATED); // <--- Ключевая строка
         when(response.getLocation()).thenReturn(URI.create("http://test/auth/admin/realms/ITM/users/12345-6789"));
-        // when(response.getHeaderString("Location"))... убрано как ненужное
+
 
         assertDoesNotThrow(() -> userService.createUser(userRequest));
         verify(usersResource, times(1)).create(any());
