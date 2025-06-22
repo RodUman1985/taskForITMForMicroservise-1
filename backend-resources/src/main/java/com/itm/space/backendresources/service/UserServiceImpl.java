@@ -38,20 +38,20 @@ public class UserServiceImpl implements UserService {
         try {
             Response response = keycloakClient.realm(realm).users().create(user);
 
-            // Проверяем, что ответ не null
+
             if (response == null) {
                 throw new BackendResourcesException("Keycloak response is null", HttpStatus.INTERNAL_SERVER_ERROR);
             }
 
-            // Проверяем статус ответа
+
             if (response.getStatus() != Response.Status.CREATED.getStatusCode()) {
                 throw new BackendResourcesException(
                         String.format("Create method returned status %s (Code: %d); expected status: Created (201)",
-                                response.getStatusInfo().getReasonPhrase(), response.getStatus()),
+                                response.getStatusInfo().getReasonPhrase(), (Object) response.getStatus()),
                         HttpStatus.resolve(response.getStatus()));
             }
 
-            // Получаем ID созданного пользователя
+
             String userId = CreatedResponseUtil.getCreatedId(response);
             log.info("Created UserId: {}", userId);
         } catch (WebApplicationException ex) {
@@ -82,7 +82,7 @@ public class UserServiceImpl implements UserService {
 
     private CredentialRepresentation preparePasswordRepresentation(String password) {
         CredentialRepresentation credentialRepresentation = new CredentialRepresentation();
-        credentialRepresentation.setTemporary(false);
+        credentialRepresentation.setTemporary(Boolean.valueOf(false));
         credentialRepresentation.setType(CredentialRepresentation.PASSWORD);
         credentialRepresentation.setValue(password);
         return credentialRepresentation;
@@ -94,7 +94,7 @@ public class UserServiceImpl implements UserService {
         newUser.setUsername(userRequest.getUsername());
         newUser.setEmail(userRequest.getEmail());
         newUser.setCredentials(List.of(credentialRepresentation));
-        newUser.setEnabled(true);
+        newUser.setEnabled(Boolean.valueOf(true));
         newUser.setFirstName(userRequest.getFirstName());
         newUser.setLastName(userRequest.getLastName());
         return newUser;
