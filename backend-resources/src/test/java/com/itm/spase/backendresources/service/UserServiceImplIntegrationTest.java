@@ -71,12 +71,12 @@ class UserServiceImplIntegrationTest {
                 "testuser", "test@example.com", "password", "John", "Doe");
         Response response = mock(Response.class);
 
-        // Используем только реально используемые моки (getStatus, getStatusInfo, getLocation)
+
         when(keycloakClient.realm(realm)).thenReturn(realmResource);
         when(realmResource.users()).thenReturn(usersResource);
         when(usersResource.create(any())).thenReturn(response);
 
-        when(response.getStatus()).thenReturn(Integer.valueOf(201)); // HTTP 201 Created
+        when(response.getStatus()).thenReturn(Integer.valueOf(201));
         when(response.getStatusInfo()).thenReturn(Response.Status.CREATED); // <--- Ключевая строка
         when(response.getLocation()).thenReturn(URI.create("http://test/auth/admin/realms/ITM/users/12345-6789"));
 
