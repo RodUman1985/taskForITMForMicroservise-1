@@ -58,7 +58,7 @@ class UserServiceImplIntegrationTest {
 
     @BeforeEach
     void setUp() throws Exception {
-        // Устанавливаем приватное поле "realm" через reflection для корректной работы
+
         java.lang.reflect.Field realmField = UserServiceImpl.class.getDeclaredField("realm");
         realmField.setAccessible(true);
         realmField.set(userService, realm);
